@@ -9,9 +9,9 @@ import java.util.Scanner;
  */
 public class TestJavaNet {
 	public static void main(String[] args) throws IOException {
-		URL url = new URL("https://www.ya.ru");
+		URL url = new URL("file:///home/masterlomaster/Документы/t.girevoy.pub");
 		System.out.println();
-		Scanner scanner = new Scanner(url.openStream());
+		Scanner scanner = new Scanner(url.openConnection().getInputStream());
 		while (scanner.hasNextLine()) {
 			System.out.println(scanner.nextLine());
 		}
