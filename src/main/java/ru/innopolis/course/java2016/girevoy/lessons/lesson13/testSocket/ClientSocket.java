@@ -12,7 +12,7 @@ public class ClientSocket {
 		try {
 			Socket socket = new Socket("127.0.0.1",8080);
 			OutputStream outputStream = socket.getOutputStream();
-			for (int i = 1;i < 1000000;i++) {
+			for (int i = 1;i < 2;i++) {
 				outputStream.write(("Привет" + i).getBytes());
 			}
 
