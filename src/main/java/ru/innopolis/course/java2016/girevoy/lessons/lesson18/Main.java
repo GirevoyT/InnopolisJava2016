@@ -7,10 +7,10 @@ import java.sql.*;
  */
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        Class.forName("org.postgresql.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost/test","postgres","Testarosa123");
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=TestBD;","sa","Testarosa123");
         Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery("select * from public.\"ATT\"");
+        ResultSet rs = statement.executeQuery("select * from ATT");
         while (rs.next()) {
             System.out.println(rs.getInt("user_id") + " " + rs.getInt("lesson_id"));
         }
