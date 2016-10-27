@@ -8,7 +8,7 @@ import java.sql.*;
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost;databaseName=TestBD;","sa","Testarosa123");
+        Connection connection = DriverManager.getConnection("jdbc:sqlserver://192.168.140.1;databaseName=TestBD;","sa","Testarosa123");
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery("select * from ATT");
         while (rs.next()) {
@@ -16,5 +16,4 @@ public class Main {
         }
         connection.close();
     }
-
 }
