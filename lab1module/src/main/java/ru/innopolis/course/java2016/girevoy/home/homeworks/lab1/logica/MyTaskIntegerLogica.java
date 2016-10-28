@@ -26,7 +26,7 @@ public class MyTaskIntegerLogica implements Logica<Integer,BigInteger> {
 			System.out.println("Текущее значение марка " + mark + " равно " + sum);
 			logger.debug("Отработала логика, текущее значение марка {} равно {}",mark,sum);
 		} else {
-			logger.warn("Логике инт передали не положительное и чётное число, сумма не изменилась");
+			logger.info("Логике инт передали не положительное и чётное число, сумма не изменилась");
 		}
 	}
 
