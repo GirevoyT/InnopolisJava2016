@@ -23,6 +23,7 @@ public class ConnectionsPool implements Closeable{
 	private final Queue<Connection> pool = new LinkedList<>();
 	private int baseCount;
 	private int maxCount;
+	private int initCount;
 	private final String dbURL;
 	private final String dbLogin;
 	private final String dbPassword;
@@ -30,6 +31,7 @@ public class ConnectionsPool implements Closeable{
 	private ConnectionsPool () {
 		this.baseCount = DBConfig.DB_CONNECTIONPOOL_BASE_COUNT;
 		this.maxCount = DBConfig.DB_CONNECTIONPOOL_MAX_COUNT;
+		this.initCount = 0;
 		this.dbURL = DBConfig.DB_URL;
 		this.dbLogin = DBConfig.DB_LOGIN;
 		this.dbPassword = DBConfig.DB_PASSWORD;
@@ -85,5 +87,13 @@ public class ConnectionsPool implements Closeable{
 		if (!allRight) {
 			throw new IOException("Не все конекты закрылись без ошибок");
 		}
+	}
+
+	public int getInitCount() {
+		return initCount;
+	}
+
+	public void setInitCount(int initCount) {
+		this.initCount = initCount;
 	}
 }
