@@ -1,6 +1,7 @@
 package ru.innopolis.course.java2016.girevoy.home.web.profile.models;
 
-import java.util.Date;
+import ru.innopolis.course.java2016.girevoy.home.config.SecurityConfig;
+import ru.innopolis.course.java2016.girevoy.home.security.crypt.AesCrypt;
 
 /**
  * Created by Arxan on 28.10.2016.
@@ -8,18 +9,20 @@ import java.util.Date;
 public class UserAccount {
 	private String email;
 	private String password;
+	private String encryptedPassword;
 	private String firstname;
-	private String secondname;
+	private String lastname;
 	private String middlename;
-	private Date registrationDate;
+	private String oldEmail;
 
-	public UserAccount(String email,String password, String firstname, String secondname, String middlename, Date registrationDate) {
-		this.email = email;
-		this.password = password;
-		this.firstname = firstname;
-		this.secondname = secondname;
-		this.middlename = middlename;
-		this.registrationDate = registrationDate;
+	public UserAccount () {};
+
+	public UserAccount(String email,String password, String firstname, String lastname, String middlename) {
+		setEmail(email);
+		setPassword(password);
+		setFirstname(firstname);
+		setLastname(lastname);
+		setMiddlename(middlename);
 	}
 
 	public String getEmail() {
@@ -38,12 +41,12 @@ public class UserAccount {
 		this.firstname = firstname;
 	}
 
-	public String getSecondname() {
-		return secondname;
+	public String getLastname() {
+		return lastname;
 	}
 
-	public void setSecondname(String secondname) {
-		this.secondname = secondname;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	public String getMiddlename() {
@@ -54,11 +57,31 @@ public class UserAccount {
 		this.middlename = middlename;
 	}
 
-	public Date getRegistrationDate() {
-		return registrationDate;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
+	public void setPassword(String password) {
+		this.password = password;
+		AesCrypt aesCrypt = new AesCrypt(SecurityConfig.USER_PASSWORD_CRYPT_KEY);
+		this.encryptedPassword = aesCrypt.encrypt(password);
+	}
+
+	public String getEncryptedPassword() {
+		return encryptedPassword;
+	}
+
+	public void setEncryptedPassword(String encryptedPassword) {
+		this.encryptedPassword = encryptedPassword;
+		AesCrypt aesCrypt = new AesCrypt(SecurityConfig.USER_PASSWORD_CRYPT_KEY);
+		this.password = aesCrypt.decrypt(encryptedPassword);
+	}
+
+	public String getOldEmail() {
+		return oldEmail;
+	}
+
+	public void setOldEmail(String oldEmail) {
+		this.oldEmail = oldEmail;
 	}
 }

@@ -14,6 +14,7 @@ public class DBConfig {
 	public static final String DB_PASSWORD;
 	public static final int DB_CONNECTIONPOOL_BASE_COUNT;
 	public static final int DB_CONNECTIONPOOL_MAX_COUNT;
+	public static final int DB_WAIT_CONNECTION_FROM_POOL_TIME;
 	static {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -21,10 +22,11 @@ public class DBConfig {
 			LoggerHelp.printExeptionInError(e,logger);
 			throw new RuntimeException(e);
 		}
-		DB_URL = "jdbc:sqlserver://192.168.140.1;databaseName=TestBD;";
+		DB_URL = "jdbc:sqlserver://localhost;databaseName=LabBase;";
 		DB_LOGIN = "sa";
 		DB_PASSWORD = "Testarosa123";
 		DB_CONNECTIONPOOL_BASE_COUNT = 1;
 		DB_CONNECTIONPOOL_MAX_COUNT = 3;
+		DB_WAIT_CONNECTION_FROM_POOL_TIME = 1000;
 	}
 }

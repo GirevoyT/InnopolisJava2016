@@ -4,11 +4,57 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 	<servlet>
-		<servlet-name>MainServlet</servlet-name>
-		<servlet-class>ru.innopolis.course.java2016.girevoy.home.FirstServlet</servlet-class>
+		<servlet-name>Index</servlet-name>
+		<servlet-class>ru.innopolis.course.java2016.girevoy.home.web.servlets.Index</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>MainServlet</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<servlet-name>Index</servlet-name>
+		<url-pattern></url-pattern>
 	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Login</servlet-name>
+		<servlet-class>ru.innopolis.course.java2016.girevoy.home.web.servlets.Login</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Login</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Registration</servlet-name>
+		<servlet-class>ru.innopolis.course.java2016.girevoy.home.web.servlets.registration.Registration</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Registration</servlet-name>
+		<url-pattern>/registration</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>RegistrationSuccess</servlet-name>
+		<servlet-class>ru.innopolis.course.java2016.girevoy.home.web.servlets.registration.Success</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RegistrationSuccess</servlet-name>
+		<url-pattern>/registration/success</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>RedactProfile</servlet-name>
+		<servlet-class>ru.innopolis.course.java2016.girevoy.home.web.servlets.registration.Redact</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RedactProfile</servlet-name>
+		<url-pattern>/registration/redact</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>RedactSuccess</servlet-name>
+		<servlet-class>ru.innopolis.course.java2016.girevoy.home.web.servlets.registration.SuccessRedact</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RedactSuccess</servlet-name>
+		<url-pattern>/registration/successRedact</url-pattern>
+	</servlet-mapping>
+
 </web-app>

@@ -2,6 +2,7 @@ package ru.innopolis.course.java2016.girevoy.home.database.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.innopolis.course.java2016.girevoy.home.config.DBConfig;
 import ru.innopolis.course.java2016.girevoy.home.database.exeptions.AddConectionToPoolExeption;
 import ru.innopolis.course.java2016.girevoy.home.database.exeptions.NoFreeConnectionExeption;
 import ru.innopolis.course.java2016.girevoy.home.database.models.ConnectionsPool;
@@ -24,7 +25,7 @@ public class ConnectionsPoolService {
 			for (int i=0;i <connectionsPool.getBaseCount();i++) {
 				try {
 					addNewConnection();
-				} catch (SQLException e) {
+				} catch (AddConectionToPoolExeption e) {
 					LoggerHelp.printExeptionInError(e,logger);
 					throw new RuntimeException(e);
 				}
@@ -44,18 +45,54 @@ public class ConnectionsPoolService {
 			if (connectionsPool.getPool().size() > 0) {
 				result = connectionsPool.getPool().poll();
 			} else if (connectionsPool.getInitCount() < connectionsPool.getMaxCount()) {
-				try {
-					addNewConnection();
-					result = connectionsPool.getPool().poll();
-				} catch (SQLException e) {
-					LoggerHelp.printExeptionInError(e,logger);
-					throw new AddConectionToPoolExeption(e);
-				}
+				addNewConnection();
+				result = connectionsPool.getPool().poll();
 			} else {
-				throw new NoFreeConnectionExeption();
+				throw new NoFreeConnectionExeption("Нет свободных коннектов");
 			}
 		}
 		return result;
+	}
+
+	/**
+	 * Метод для получения коннекта к бд из пула, при необходимости ждущий конекта заданное время
+	 * @param miliseconds количество милесекунд ожидания
+	 * @return возвращает коннект к бд
+	 * @throws AddConectionToPoolExeption ошибка отсутствия подключений к бд
+	 * @throws NoFreeConnectionExeption ошибка SQLExeption при попытке раширения пула
+	 */
+	public static Connection getConnectionWithWait (int miliseconds) throws AddConectionToPoolExeption, NoFreeConnectionExeption {
+		Connection result = null;
+		synchronized (connectionsPool) {
+			if (connectionsPool.getPool().size() > 0) {
+				result = connectionsPool.getPool().poll();
+			} else if (connectionsPool.getInitCount() < connectionsPool.getMaxCount()) {
+				addNewConnection();
+				result = connectionsPool.getPool().poll();
+			} else {
+				try {
+					connectionsPool.wait(miliseconds);
+				} catch (InterruptedException e) {
+					LoggerHelp.printExeptionInError(e,logger);
+				}
+				if (connectionsPool.getPool().size() > 0) {
+					result = connectionsPool.getPool().poll();
+				} else {
+					throw new NoFreeConnectionExeption("Нет свободных коннектов");
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Метод для получения коннекта к бд из пула, при необходимости ждущий конекта
+	 * @return возвращает коннект к бд
+	 * @throws AddConectionToPoolExeption ошибка отсутствия подключений к бд
+	 * @throws NoFreeConnectionExeption ошибка SQLExeption при попытке раширения пула
+	 */
+	public static Connection getConnectionWithWait () throws AddConectionToPoolExeption, NoFreeConnectionExeption {
+		return getConnectionWithWait(DBConfig.DB_WAIT_CONNECTION_FROM_POOL_TIME);
 	}
 
 	/**
@@ -65,15 +102,24 @@ public class ConnectionsPoolService {
 	public static void returnConnection(Connection connection) {
 		synchronized (connectionsPool) {
 			connectionsPool.getPool().add(connection);
+			connectionsPool.notify();
 		}
 	}
+
 	/*
-	* Метод для добавление нового конекта в пулл
+	 * Метод для добавление нового конекта в пулл
 	 */
-	private static void addNewConnection () throws SQLException {
-		Connection tmp = DriverManager.getConnection(connectionsPool.getDbURL(),
-														connectionsPool.getDbLogin(),
-														connectionsPool.getDbPassword());
+	private static void addNewConnection () throws AddConectionToPoolExeption {
+
+		Connection tmp = null;
+		try {
+			tmp = DriverManager.getConnection(connectionsPool.getDbURL(),
+															connectionsPool.getDbLogin(),
+															connectionsPool.getDbPassword());
+		} catch (SQLException e) {
+			LoggerHelp.printExeptionInError(e,logger);
+			throw new AddConectionToPoolExeption(e);
+		}
 		synchronized (connectionsPool) {
 			connectionsPool.getPool().add(tmp);
 			connectionsPool.setInitCount(connectionsPool.getInitCount() + 1);
