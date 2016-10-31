@@ -1,4 +1,4 @@
-package ru.innopolis.config;
+package ru.innopolis.server.configs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +12,13 @@ public class DBConfig {
 	public static final String DB_URL;
 	public static final String DB_LOGIN;
 	public static final String DB_PASSWORD;
+	public static final String DB_JDBC_DRIVER_CLASS = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	public static final int DB_CONNECTIONPOOL_BASE_COUNT;
 	public static final int DB_CONNECTIONPOOL_MAX_COUNT;
-	public static final int DB_WAIT_CONNECTION_FROM_POOL_TIME;
+	public static final int DB_WAIT_CONNECTION_FROM_POOL_TIMEOUT;
 	static {
 		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			Class.forName(DB_JDBC_DRIVER_CLASS);
 		} catch (ClassNotFoundException e) {
 			LoggerHelp.printExeptionInError(e,logger);
 			throw new RuntimeException(e);
@@ -27,6 +28,6 @@ public class DBConfig {
 		DB_PASSWORD = "Testarosa123";
 		DB_CONNECTIONPOOL_BASE_COUNT = 1;
 		DB_CONNECTIONPOOL_MAX_COUNT = 3;
-		DB_WAIT_CONNECTION_FROM_POOL_TIME = 1000;
+		DB_WAIT_CONNECTION_FROM_POOL_TIMEOUT = 1000;
 	}
 }

@@ -1,32 +1,27 @@
-package ru.innopolis.database.models;
+package ru.innopolis.server.database;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.innopolis.config.DBConfig;
-import ru.innopolis.loggerhelp.LoggerHelp;
+import ru.innopolis.server.configs.DBConfig;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
  * Created by Arxan on 28.10.2016.
  */
-public class ConnectionsPool implements Closeable{
+public class ConnectionsPool {
 	private static final ConnectionsPool INSTANCE = new ConnectionsPool();
-
-	private static final Logger logger= LoggerFactory.getLogger(ConnectionsPool.class);
+	private static final Logger logger = LoggerFactory.getLogger(ConnectionsPool.class);
 
 	private final Queue<Connection> pool = new LinkedList<>();
 	private int baseCount;
 	private int maxCount;
 	private int initCount;
-	private final String dbURL;
-	private final String dbLogin;
-	private final String dbPassword;
+	private String dbURL;
+	private String dbLogin;
+	private String dbPassword;
 
 	private ConnectionsPool () {
 		this.baseCount = DBConfig.DB_CONNECTIONPOOL_BASE_COUNT;
@@ -71,22 +66,6 @@ public class ConnectionsPool implements Closeable{
 
 	public String getDbPassword() {
 		return dbPassword;
-	}
-
-	@Override
-	public void close() throws IOException {
-		boolean allRight = true;
-		for (Connection connection : pool) {
-			try {
-				connection.close();
-			} catch (SQLException e) {
-				allRight = false;
-				LoggerHelp.printExeptionInError(e,logger);
-			}
-		}
-		if (!allRight) {
-			throw new IOException("Не все конекты закрылись без ошибок");
-		}
 	}
 
 	public int getInitCount() {

@@ -1,4 +1,4 @@
-package ru.innopolis.models.student;
+package ru.innopolis.common.models.student;
 
 import java.util.Date;
 
@@ -6,21 +6,11 @@ import java.util.Date;
  * Created by Girevoy.T on 31.10.2016.
  */
 public class Student {
+	private Integer id;
 	private String firstname;
 	private String lastname;
 	private Sex sex;
 	private Date birthDate;
-
-	public Student(String firstname, String lastname, Sex sex, Date birthDate) {
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.sex = sex;
-		this.birthDate = birthDate;
-	}
-
-	public Student() {
-
-	}
 
 	public String getFirstname() {
 		return firstname;
@@ -52,5 +42,13 @@ public class Student {
 
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }
