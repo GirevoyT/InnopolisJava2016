@@ -127,12 +127,9 @@ public class DAOStudentImpl implements DAOStudent {
 	}
 
 	@Override
-	public void deleteStudentFromBase(Student student) throws DAOExeption {
-		if (student.getId() == null) {
-			throw new DAOExeption("Студент не содержит поля ID");
-		}
+	public void deleteStudentFromBase(int studentId) throws DAOExeption {
 		StringBuilder sql = new StringBuilder();
-		sql.append("DELETE FROM Students WHERE id=").append(student.getId());
+		sql.append("DELETE FROM Students WHERE id=").append(studentId);
 		if (updateStudentsByQuery(sql.toString()) != 1) {
 			throw new DAOExeption("Студента с таким ID нету");
 		}

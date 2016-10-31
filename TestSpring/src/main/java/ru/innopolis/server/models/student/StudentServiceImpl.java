@@ -65,8 +65,13 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public void deleteStudentFromBase(Student student) throws StudentServiceDataExeption {
+		deleteStudentFromBaseById(student.getId());
+	}
+
+	@Override
+	public void deleteStudentFromBaseById(int id) throws StudentServiceDataExeption {
 		try {
-			daoStudent.deleteStudentFromBase(student);
+			daoStudent.deleteStudentFromBase(id);
 		} catch (DAOExeption e) {
 			throw new StudentServiceDataExeption(e);
 		}

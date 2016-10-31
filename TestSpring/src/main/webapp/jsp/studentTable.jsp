@@ -14,6 +14,7 @@
 	<td>lastname</td>
 	<td>sex</td>
 	<td>birt date</td>
+	<td></td>
 	</thead>
 	<tbody>
 		<c:forEach items="${studentArray}" var="item">
@@ -23,8 +24,17 @@
 			<td>${item.lastname}</td>
 			<td>${item.sex}</td>
 			<td>${item.birthDate}</td>
+			<td onclick="MAIN.delete(${item.id})">X</td>
 		</tr>
 		</c:forEach>
+		<tr>
+			<td></td>
+			<td><input id="inputFirstname"></td>
+			<td><input id="inputLastname"></td>
+			<td><input id="inputSex"></td>
+			<td><input id="inputBirthDate" type="date"></td>
+			<td onclick="MAIN.add()">OK</td>
+		</tr>
 	</tbody>
 
 </table>

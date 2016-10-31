@@ -15,5 +15,6 @@ public interface StudentService {
 	public ArrayList<Student> getStudentListWithFilterByFirstname(String firstname) throws StudentServiceDataExeption;
 	public Student getStudentById (int id) throws StudentServiceDataExeption;
 	public void deleteStudentFromBase(Student student) throws StudentServiceDataExeption;
+	public void deleteStudentFromBaseById(int id) throws StudentServiceDataExeption;
 	public void addStudentToBase(Student student) throws StudentServiceDataExeption;
 }

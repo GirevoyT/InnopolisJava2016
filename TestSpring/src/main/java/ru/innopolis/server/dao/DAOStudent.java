@@ -13,7 +13,7 @@ public interface DAOStudent {
 	public ArrayList<Student> getStudentsList() throws DAOExeption;
 	public ArrayList<Student> getStudentListWithFilterByFirstname(String firstname) throws DAOExeption;
 	public Student getStudentById(int id) throws DAOExeption;
-	public void deleteStudentFromBase(Student student) throws DAOExeption;
+	public void deleteStudentFromBase(int studentId) throws DAOExeption;
 	public void addStudentToBase(Student student) throws DAOExeption;
 
 }
