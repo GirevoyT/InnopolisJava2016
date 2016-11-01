@@ -10,4 +10,8 @@ import java.util.List;
  */
 public interface DAOAttendance {
 	public List<Attendance> getAttendacesList() throws DAOExeption;
+
+	public void addNewAttendance(Attendance attendance) throws DAOExeption;
+
+	public void deleteAttendance(Attendance attendance) throws DAOExeption;
 }

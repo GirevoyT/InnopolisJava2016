@@ -29,7 +29,7 @@ public class DAOAttendanceImpl implements DAOAttendance{
 
 	private static Logger logger = LoggerFactory.getLogger(DAOAttendanceImpl.class);
 
-	private List<Attendance> getAttendacesListByQuery(String query) throws DAOExeption {
+	private List<Attendance> getAttendancesListByQuery(String query) throws DAOExeption {
 		List<Attendance> attendances = new ArrayList<>();
 		Connection connection = null;
 		Statement statement = null;
@@ -73,7 +73,55 @@ public class DAOAttendanceImpl implements DAOAttendance{
 	public List<Attendance> getAttendacesList() throws DAOExeption {
 		StringBuilder sql = new StringBuilder();
 		sql.append("Select lection_id,student_id from Attendance");
-		return getAttendacesListByQuery(sql.toString());
+		return getAttendancesListByQuery(sql.toString());
+	}
+
+	private int updateAttendancesByQuery(String query) throws DAOExeption {
+		Connection connection = null;
+		Statement statement = null;
+		int result;
+		try {
+			connection = connectionsPoolService.getConnectionWithWait();
+			statement = connection.createStatement();
+			result = statement.executeUpdate(query);
+		} catch (NoFreeConnectionExeption e) {
+			throw new DAOExeption("Ошибка получения конекта",e);
+		} catch (SQLException e) {
+			throw new DAOExeption("Ошибка работы с базой",e);
+		} finally {
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					LoggerHelp.printExeptionInWarn(e,logger);
+				}
+			}
+			connectionsPoolService.returnConnection(connection);
+		}
+		return result;
+	}
+
+	@Override
+	public void addNewAttendance(Attendance attendance) throws DAOExeption {
+		StringBuilder sql = new StringBuilder();
+		sql.append("INSERT INTO Attendance (student_id,lection_id) VALUES(")
+				.append(attendance.getStudent_id()).append(",")
+				.append(attendance.getLection_id()).append(")");
+		if (updateAttendancesByQuery(sql.toString()) != 1) {
+			throw new DAOExeption("Добавление не прошло");
+		}
+	}
+
+	@Override
+	public void deleteAttendance(Attendance attendance) throws DAOExeption {
+		StringBuilder sql = new StringBuilder();
+		sql.append("BEGIN TRANSACTION\n")
+				.append("DELETE FROM Attendance WHERE student_id=").append(attendance.getStudent_id()).append(" AND ")
+				.append("lection_id=").append(attendance.getLection_id()).append("\n")
+				.append("COMMIT");
+		if (updateAttendancesByQuery(sql.toString()) != 1) {
+			throw new DAOExeption("Такого интенданс нету");
+		}
 	}
 
 }

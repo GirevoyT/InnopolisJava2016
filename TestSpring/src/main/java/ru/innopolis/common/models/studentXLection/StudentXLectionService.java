@@ -10,4 +10,5 @@ import java.util.List;
 public interface StudentXLectionService {
 
 	public List<StudentXLection> getSudentXLectionList() throws StudentXLectionDataExeption;
+	public void noteAttendance(int StudentId,int LectionId,boolean state) throws StudentXLectionDataExeption;
 }

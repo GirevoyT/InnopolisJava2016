@@ -72,5 +72,22 @@ public class StudentXLectionServiceImpl implements StudentXLectionService {
 		return result;
 	}
 
+	@Override
+	public void noteAttendance(int studentId, int lectionId, boolean state) throws StudentXLectionDataExeption {
+		Attendance attendance = new Attendance();
+		attendance.setLection_id(lectionId);
+		attendance.setStudent_id(studentId);
+		try {
+			if (state) {
+				daoAttendance.addNewAttendance(attendance);
+			} else {
+				daoAttendance.deleteAttendance(attendance);
+			}
+		} catch (DAOExeption e) {
+			throw new StudentXLectionDataExeption("Ошибка с базой",e);
+		}
+
+
+	}
 
 }
