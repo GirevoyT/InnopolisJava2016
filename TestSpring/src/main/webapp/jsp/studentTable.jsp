@@ -7,6 +7,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<script src="resources/scripts/Students_00001.js"></script>
+
 <table>
 	<thead>
 	<td>id</td>
@@ -24,7 +26,7 @@
 			<td>${item.lastname}</td>
 			<td>${item.sex}</td>
 			<td>${item.birthDate}</td>
-			<td onclick="MAIN.delete(${item.id})">X</td>
+			<td onclick="STUDENTS.delete(${item.id})">X</td>
 		</tr>
 		</c:forEach>
 		<tr>
@@ -33,7 +35,7 @@
 			<td><input id="inputLastname"></td>
 			<td><input id="inputSex"></td>
 			<td><input id="inputBirthDate" type="date"></td>
-			<td onclick="MAIN.add()">OK</td>
+			<td onclick="STUDENTS.add()">OK</td>
 		</tr>
 	</tbody>
 

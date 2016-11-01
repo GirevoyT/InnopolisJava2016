@@ -12,12 +12,37 @@
 		  scope="singleton">
 	</bean>
 	<bean id="daoStudent"
-		  class="ru.innopolis.server.dao.DAOStudentImpl"
+		  class="ru.innopolis.server.dao.student.DAOStudentImpl"
+		  autowire="byName"
+		  scope="singleton">
+	</bean>
+	<bean id="daoAttendance"
+		  class="ru.innopolis.server.dao.attendance.DAOAttendanceImpl"
+		  autowire="byName"
+		  scope="singleton">
+	</bean>
+	<bean id="daoLection"
+		  class="ru.innopolis.server.dao.lection.DAOLectionImpl"
 		  autowire="byName"
 		  scope="singleton">
 	</bean>
 	<bean id="studentService"
 		  class="ru.innopolis.server.models.student.StudentServiceImpl"
+		  autowire="byName"
+		  scope="singleton">
+	</bean>
+	<bean id="studentAttendanceService"
+		  class="ru.innopolis.server.models.studentAttendences.StudentAttendanceServiceImpl"
+		  autowire="byName"
+		  scope="singleton">
+	</bean>
+	<bean id="lectionService"
+		  class="ru.innopolis.server.models.lection.LectionServiceImpl"
+		  autowire="byName"
+		  scope="singleton">
+	</bean>
+	<bean id="studentXLectionService"
+		  class="ru.innopolis.server.models.studentXLection.StudentXLectionServiceImpl"
 		  autowire="byName"
 		  scope="singleton">
 	</bean>

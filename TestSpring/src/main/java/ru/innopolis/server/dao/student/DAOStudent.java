@@ -1,7 +1,7 @@
-package ru.innopolis.server.dao;
+package ru.innopolis.server.dao.student;
 
 import ru.innopolis.common.models.student.Student;
-import ru.innopolis.server.dao.exeptions.DAOExeption;
+import ru.innopolis.server.dao.student.exeptions.DAOExeption;
 
 import java.util.ArrayList;
 

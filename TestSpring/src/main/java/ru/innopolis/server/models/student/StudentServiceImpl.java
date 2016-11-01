@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.innopolis.common.models.student.Sex;
 import ru.innopolis.common.models.student.Student;
 import ru.innopolis.common.models.student.StudentService;
-import ru.innopolis.server.dao.DAOStudent;
-import ru.innopolis.server.dao.exeptions.DAOExeption;
+import ru.innopolis.server.dao.student.DAOStudent;
+import ru.innopolis.server.dao.student.exeptions.DAOExeption;
 import ru.innopolis.common.models.student.exeptions.CreateStudentExeption;
 import ru.innopolis.common.models.student.exeptions.StudentServiceDataExeption;
 

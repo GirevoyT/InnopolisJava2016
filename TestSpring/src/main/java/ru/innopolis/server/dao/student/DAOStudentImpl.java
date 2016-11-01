@@ -1,4 +1,4 @@
-package ru.innopolis.server.dao;
+package ru.innopolis.server.dao.student;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.innopolis.common.models.student.Sex;
 import ru.innopolis.common.models.student.Student;
 import ru.innopolis.loggerhelp.LoggerHelp;
-import ru.innopolis.server.dao.exeptions.DAOExeption;
+import ru.innopolis.server.dao.student.exeptions.DAOExeption;
 import ru.innopolis.server.database.ConnectionPoolService;
 import ru.innopolis.server.database.exeptions.NoFreeConnectionExeption;
 
@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  * Created by Arxan on 31.10.2016.
@@ -40,7 +39,6 @@ public class DAOStudentImpl implements DAOStudent {
 			connection = connectionsPoolService.getConnectionWithWait();
 			statement = connection.createStatement();
 			resultSet = statement.executeQuery(query);
-			LinkedList<Student> studentsList = new LinkedList<>();
 			while (resultSet.next()) {
 				Student tmp = new Student();
 				tmp.setId(resultSet.getInt(1));
@@ -129,7 +127,10 @@ public class DAOStudentImpl implements DAOStudent {
 	@Override
 	public void deleteStudentFromBase(int studentId) throws DAOExeption {
 		StringBuilder sql = new StringBuilder();
-		sql.append("DELETE FROM Students WHERE id=").append(studentId);
+		sql.append("BEGIN TRANSACTION\n")
+			.append("DELETE FROM Attendance WHERE student_id=").append(studentId).append("\n")
+			.append("DELETE FROM Students WHERE id=").append(studentId).append("\n")
+			.append("COMMIT");
 		if (updateStudentsByQuery(sql.toString()) != 1) {
 			throw new DAOExeption("Студента с таким ID нету");
 		}

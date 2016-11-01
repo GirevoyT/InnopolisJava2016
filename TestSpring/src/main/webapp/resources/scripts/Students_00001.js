@@ -1,28 +1,24 @@
 /**
  * Created by Arxan on 30.10.2016.
  */
-function Main() {}
-Main.prototype.onstartup = function () {
-	$.ajax({
-		url: "/index/studentTable",
-		data: {},
-		success: function(html){
-			$("#body").html(html);
-		}
-	});
+function Students() {}
+Students.prototype.onstartup = function () {
+
 }
-Main.prototype.delete = function (id) {
+
+Students.prototype.delete = function (id) {
 	$.ajax({
-		url: "/index/deleteRow",
+		url: "/students/deleteRow",
 		data: {studentId:id},
 		success: function(html){
 			$("#body").html(html);
 		}
 	});
 }
-Main.prototype.add = function () {
+
+Students.prototype.add = function () {
 	$.ajax({
-		url: "/index/addStudent",
+		url: "/students/addStudent",
 		data: {studentFirstname:$("#inputFirstname").val(),
 				studentLastname:$("#inputLastname").val(),
 				studentSex:$("#inputSex").val(),
@@ -33,4 +29,4 @@ Main.prototype.add = function () {
 	});
 }
 
-var MAIN = new Main();
+var STUDENTS = new Students();
