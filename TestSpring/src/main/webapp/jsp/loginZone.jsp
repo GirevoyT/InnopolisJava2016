@@ -21,6 +21,7 @@
 
 <input id="token" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 <sec:authorize access="hasRole('ROLE_USER')">
+	Добро пожаловать ${username}!
 	<button onclick="LOGINZONE.logout()">Logout</button>
 </sec:authorize>
 

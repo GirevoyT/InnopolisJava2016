@@ -18,6 +18,7 @@
 		<!--Config base parametrs-->
 		<form-login login-page="/403"
 					default-target-url="/login"
+					always-use-default-target="true"
 					authentication-failure-url="/login?error=true"
 					username-parameter="j_username"
 					password-parameter="j_password" />

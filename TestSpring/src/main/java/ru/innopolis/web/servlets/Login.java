@@ -18,23 +18,26 @@ public class Login {
 	public ModelAndView login() {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("loginZone");
+		modelAndView.addObject("username", getUserName());
 		return modelAndView;
-	}
-	@RequestMapping("/allok")
-	public ModelAndView allOK() {
-		return new Index().index();
 	}
 
 	@RequestMapping("/403")
 	public ModelAndView accesssDenied() {
-		ModelAndView model = new ModelAndView();
+		ModelAndView modelAndView = new ModelAndView();
 		//check if user is login
+		modelAndView.addObject("username", getUserName());
+		modelAndView.setViewName("403");
+		return modelAndView;
+	}
+
+	private String getUserName() {
+		String result="ANONIM";
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (!(auth instanceof AnonymousAuthenticationToken)) {
 			UserDetails userDetail = (UserDetails) auth.getPrincipal();
-			model.addObject("username", userDetail.getUsername());
+			result = userDetail.getUsername();
 		}
-		model.setViewName("403");
-		return model;
+		return result;
 	}
 }
