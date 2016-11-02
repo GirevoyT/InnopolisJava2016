@@ -19,6 +19,7 @@
 		<button url="/lections/lectionsTable" onclick="MAIN.buttonPanelClick(this)">Lections</button>
 		<button url="/studentsAttendances/studentsAttendancesTable" onclick="MAIN.buttonPanelClick(this)">Student's Attendances</button>
 		<button url="/studentsXLection/studentsXLectionTable" onclick="MAIN.buttonPanelClick(this)">Student X Lection</button>
+		<button url="/login" onclick="MAIN.buttonPanelClick(this)">Login</button>
 	</div>
 </div>
 <div id="body"></div>
