@@ -10,6 +10,13 @@ Main.prototype.onstartup = function () {
 			$("#body").html(html);
 		}
 	});
+	$.ajax({
+		url: "/login",
+		data: {},
+		success: function(html){
+			$("#loginZone").html(html);
+		}
+	});
 }
 
 Main.prototype.buttonPanelClick = function (button) {
@@ -18,6 +25,22 @@ Main.prototype.buttonPanelClick = function (button) {
 		data: {},
 		success: function(html){
 			$("#body").html(html);
+		},
+		error: function(resp){
+			console.log (resp)
+			$("#body").html(resp.responseText);
+		}
+	});
+}
+
+Main.prototype.login = function () {
+	$.ajax({
+		type: "POST",
+		url: "/j_spring_security_check",
+		data: {j_username:$("#login").val(),
+			j_password:$("#password").val()},
+		success: function(html){
+			location.reload();
 		}
 	});
 }

@@ -16,6 +16,7 @@ dependencies {
 	compile 'org.springframework:spring-webmvc:4.3.3.RELEASE'
 	compile 'org.springframework:spring-core:4.3.3.RELEASE'
 	compile 'org.springframework:spring-web:4.3.3.RELEASE'
+	compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.3.RELEASE'
 	compile group: 'org.springframework.security', name: 'spring-security-core', version: '3.2.5.RELEASE'
 	compile group: 'org.springframework.security', name: 'spring-security-web', version: '3.2.5.RELEASE'
 	compile group: 'org.springframework.security', name: 'spring-security-config', version: '3.2.5.RELEASE'
