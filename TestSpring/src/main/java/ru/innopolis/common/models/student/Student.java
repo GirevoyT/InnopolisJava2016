@@ -3,7 +3,7 @@ package ru.innopolis.common.models.student;
 import java.util.Date;
 
 /**
- * Created by Girevoy.T on 31.10.2016.
+ * Класс для хранения информаци о студенте (модель студента)
  */
 public class Student {
 	private Integer id;

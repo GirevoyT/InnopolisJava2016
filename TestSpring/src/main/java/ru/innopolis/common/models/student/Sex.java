@@ -1,7 +1,7 @@
 package ru.innopolis.common.models.student;
 
 /**
- * Created by Girevoy.T on 31.10.2016.
+ * Enum для хранения поля
  */
 public enum Sex{
 	Male,

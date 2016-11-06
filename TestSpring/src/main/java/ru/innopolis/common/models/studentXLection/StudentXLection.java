@@ -5,7 +5,7 @@ import ru.innopolis.common.models.student.Student;
 import java.util.List;
 
 /**
- * Created by Girevoy.T on 01.11.2016.
+ * Класс для хранения студента и лекция на которых он был/не был
  */
 public class StudentXLection {
 	private Student student;

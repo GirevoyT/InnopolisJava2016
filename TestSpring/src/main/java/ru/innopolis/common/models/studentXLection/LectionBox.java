@@ -3,7 +3,7 @@ package ru.innopolis.common.models.studentXLection;
 import ru.innopolis.common.models.lection.Lection;
 
 /**
- * Created by Girevoy.T on 01.11.2016.
+ * Класс обертка для хранения экземпляра лекции и статуса посещена/не посещена
  */
 public class LectionBox {
 	private Lection lection;

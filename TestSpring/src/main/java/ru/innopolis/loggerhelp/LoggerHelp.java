@@ -6,7 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /**
- * Created by Arxan on 28.10.2016.
+ * Класс помошник для логирования
  */
 public class LoggerHelp {
 	/**

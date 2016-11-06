@@ -4,9 +4,12 @@ import ru.innopolis.common.models.studentAttendences.exeptions.StudentAttendance
 
 import java.util.List;
 
-/**
- * Created by Girevoy.T on 01.11.2016.
- */
+
 public interface StudentAttendanceService {
+	/**
+	 * Получить список студентов с количеством посещений
+	 * @return Список
+	 * @throws StudentAttendanceDataExeption
+	 */
 	public List<StudentAttendance> getSudentAttendanceList() throws StudentAttendanceDataExeption;
 }

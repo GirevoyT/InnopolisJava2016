@@ -5,8 +5,13 @@ import ru.innopolis.common.models.lection.exeptions.LectionServiceDataExeption;
 import java.util.List;
 
 /**
- * Created by Girevoy.T on 01.11.2016.
+ * Интерфейс сервисов для модели лекции
  */
 public interface LectionService {
+	/**
+	 * Метод для получения всех списка всех лекций
+	 * @return список лекций
+	 * @throws LectionServiceDataExeption
+	 */
 	public List<Lection> getLectionsList() throws LectionServiceDataExeption;
 }

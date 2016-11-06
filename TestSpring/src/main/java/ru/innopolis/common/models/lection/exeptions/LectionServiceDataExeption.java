@@ -1,7 +1,7 @@
 package ru.innopolis.common.models.lection.exeptions;
 
 /**
- * Created by Girevoy.T on 01.11.2016.
+ *  Ошибка обёртка для сервиса лекций
  */
 public class LectionServiceDataExeption extends Exception{
 	public LectionServiceDataExeption() {

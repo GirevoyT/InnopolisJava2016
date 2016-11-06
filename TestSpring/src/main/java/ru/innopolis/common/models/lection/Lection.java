@@ -3,7 +3,7 @@ package ru.innopolis.common.models.lection;
 import java.util.Date;
 
 /**
- * Created by Girevoy.T on 01.11.2016.
+ * Клаас для хранения информации о лекции (модель лекции)
  */
 public class Lection {
 	private int id;

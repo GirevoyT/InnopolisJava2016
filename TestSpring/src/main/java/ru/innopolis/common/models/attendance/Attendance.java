@@ -1,7 +1,7 @@
 package ru.innopolis.common.models.attendance;
 
 /**
- * Created by Girevoy.T on 01.11.2016.
+ * Класс для хранения посещения студентом student_id лекции lection_id
  */
 public class Attendance {
 

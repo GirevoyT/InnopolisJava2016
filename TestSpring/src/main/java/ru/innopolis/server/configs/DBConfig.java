@@ -5,18 +5,19 @@ import org.slf4j.LoggerFactory;
 import ru.innopolis.loggerhelp.LoggerHelp;
 
 /**
- * Created by Arxan on 28.10.2016.
+ * Класс для хранения констант настройки
  */
 public class DBConfig {
 	private static final Logger logger= LoggerFactory.getLogger(DBConfig.class);
 	public static final String DB_URL;
 	public static final String DB_LOGIN;
 	public static final String DB_PASSWORD;
-	public static final String DB_JDBC_DRIVER_CLASS = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+	public static final String DB_JDBC_DRIVER_CLASS;
 	public static final int DB_CONNECTIONPOOL_BASE_COUNT;
 	public static final int DB_CONNECTIONPOOL_MAX_COUNT;
 	public static final int DB_WAIT_CONNECTION_FROM_POOL_TIMEOUT;
 	static {
+		DB_JDBC_DRIVER_CLASS = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 		try {
 			Class.forName(DB_JDBC_DRIVER_CLASS);
 		} catch (ClassNotFoundException e) {

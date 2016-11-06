@@ -1,7 +1,7 @@
 package ru.innopolis.common.models.student.exeptions;
 
 /**
- * Created by Arxan on 31.10.2016.
+ *  Ошибка при создании экземпляра студента
  */
 public class CreateStudentExeption extends Exception {
 	public CreateStudentExeption() {

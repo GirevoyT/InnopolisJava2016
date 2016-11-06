@@ -25,7 +25,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/").setCachePeriod(31556926);
-	}
+}
 
 	// а этот бин инициализирует View нашего проекта
 	// точно это же мы делали в mvc-dispatcher-servlet.xml
