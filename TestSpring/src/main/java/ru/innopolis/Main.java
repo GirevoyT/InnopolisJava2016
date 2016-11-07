@@ -1,37 +1,51 @@
 package ru.innopolis;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import ru.innopolis.server.entity.LectionsEntity;
 
-import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.Calendar;
 
 /**
  * Created by Girevoy.T on 28.10.2016.
  */
 public class Main {
+	private static final String PERSISTENT_UNIT_NAME = "item-manager-pu";
+
+	private static final EntityManagerFactory emf;
+
+	static {
+		try {
+			emf = Persistence.createEntityManagerFactory(PERSISTENT_UNIT_NAME);
+		} catch (Throwable ex) {
+			throw new ExceptionInInitializerError(ex);
+		}
+	}
+
+	public static EntityManager getEm() {
+		return emf.createEntityManager();
+	}
+
 	public static void main(String[] args) {
 		System.out.println("Success");
-		SessionFactory sessionFactory;
-		final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-				.configure() // configures settings from hibernate.cfg.xml
-				.build();
-		try {
-			sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
-		}
-		catch (Exception e) {
-			// The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-			// so destroy it manually.
-			StandardServiceRegistryBuilder.destroy( registry );
 
-			throw new ExceptionInInitializerError("Initial SessionFactory failed" + e);
-		}
-		Session session = sessionFactory.openSession();
-		List tmp = session.createQuery("from StudentsEntity as b where firstname='Timur'").list();
-		session.close();
-		sessionFactory.close();
+
+		EntityManager entityManager = getEm();
+
+		LectionsEntity lectionsEntity = new LectionsEntity();
+
+		lectionsEntity.setDate(Calendar.getInstance().getTime());
+		lectionsEntity.setDescription("ksjdfhksdjhfkjsdf");
+		lectionsEntity.setTopic("LESSON SUPER");
+		lectionsEntity.setDuration(2);
+
+		entityManager.getTransaction().begin();
+		entityManager.merge(lectionsEntity);
+		entityManager.getTransaction().commit();
+		lectionsEntity = entityManager.find(LectionsEntity.class,1);
+		entityManager.close();
+		System.out.println(lectionsEntity);
 	}
 
 }

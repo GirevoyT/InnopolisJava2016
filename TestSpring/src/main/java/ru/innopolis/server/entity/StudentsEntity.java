@@ -1,10 +1,11 @@
-package ru.innopolis.server.dao.entity;
+package ru.innopolis.server.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 
 /**
- * Created by Arxan on 07.11.2016.
+ * Created by Girevoy.T on 07.11.2016.
  */
 @Entity
 @Table(name = "Students", schema = "dbo", catalog = "TestBase")
@@ -14,9 +15,11 @@ public class StudentsEntity {
 	private String lastname;
 	private boolean sex;
 	private Date birthDate;
+	private Collection<AttendanceEntity> attendancesById;
 
 	@Id
-	@Column(name = "id", nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false,insertable = false,updatable = false)
 	public int getId() {
 		return id;
 	}
@@ -89,5 +92,14 @@ public class StudentsEntity {
 		result = 31 * result + (sex ? 1 : 0);
 		result = 31 * result + (birthDate != null ? birthDate.hashCode() : 0);
 		return result;
+	}
+
+	@OneToMany(mappedBy = "studentsByStudentId")
+	public Collection<AttendanceEntity> getAttendancesById() {
+		return attendancesById;
+	}
+
+	public void setAttendancesById(Collection<AttendanceEntity> attendancesById) {
+		this.attendancesById = attendancesById;
 	}
 }
