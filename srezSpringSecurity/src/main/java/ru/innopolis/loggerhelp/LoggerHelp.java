@@ -5,9 +5,6 @@ import org.slf4j.Logger;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-/**
- * Класс помошник для логирования
- */
 public class LoggerHelp {
 	/**
 	 * Метод по выводу стак трейса ошибки e в логгер ERROR

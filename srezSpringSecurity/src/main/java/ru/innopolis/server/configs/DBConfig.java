@@ -4,9 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.innopolis.loggerhelp.LoggerHelp;
 
-/**
- * Класс для хранения констант настройки
- */
 public class DBConfig {
 	private static final Logger logger= LoggerFactory.getLogger(DBConfig.class);
 	public static final String DB_URL;
