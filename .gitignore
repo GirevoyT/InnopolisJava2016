@@ -5,6 +5,9 @@
 /build
 /lab1module/build
 /lab2module/build
+/TestSpring/build
+/lab1moduleWithIO/build
+/srezSpringSecurity/build
 /classes
 /gradlew
 /gradlew.bat
