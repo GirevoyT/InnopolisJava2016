@@ -1,126 +1,82 @@
 package ru.innopolis.server.dao.attendance;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import ma.glasnost.orika.MapperFacade;
 import ru.innopolis.common.models.attendance.Attendance;
-import ru.innopolis.loggerhelp.LoggerHelp;
-import ru.innopolis.server.dao.student.exeptions.DAOExeption;
-import ru.innopolis.server.database.ConnectionPoolService;
-import ru.innopolis.server.database.exeptions.NoFreeConnectionExeption;
+import ru.innopolis.mapper.MapperFactoryInstance;
+import ru.innopolis.server.dao.exeptions.DAOExeption;
+import ru.innopolis.server.database.EntityManagerFactoryInstance;
+import ru.innopolis.server.entity.AttendanceEntity;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
  * Created by Girevoy.T on 01.11.2016.
  */
+@Slf4j
 public class DAOAttendanceImpl implements DAOAttendance{
-	@Autowired
-	private ConnectionPoolService connectionsPoolService;
-
-	public void setConnectionsPoolService(ConnectionPoolService connectionsPoolService) {
-		this.connectionsPoolService = connectionsPoolService;
+	static {
+		MapperFactoryInstance.getMapperFactoryInstance().classMap(Attendance.class, AttendanceEntity.class)
+				.field("lectionId","key.lectionId")
+				.field("studentId","key.studentId")
+				.register();
+		MapperFactoryInstance.getMapperFactoryInstance().classMap(AttendanceEntity.EmbKey.class, Attendance.class)
+				.byDefault()
+				.register();
 	}
-
-	private static Logger logger = LoggerFactory.getLogger(DAOAttendanceImpl.class);
-
-	private List<Attendance> getAttendancesListByQuery(String query) throws DAOExeption {
-		List<Attendance> attendances = new ArrayList<>();
-		Connection connection = null;
-		Statement statement = null;
-		ResultSet resultSet = null;
-		try {
-			connection = connectionsPoolService.getConnectionWithWait();
-			statement = connection.createStatement();
-			resultSet = statement.executeQuery(query);
-			while (resultSet.next()) {
-				Attendance tmp = new Attendance();
-				tmp.setLection_id(resultSet.getInt(1));
-				tmp.setStudent_id(resultSet.getInt(2));
-				attendances.add(tmp);
-			}
-		} catch (NoFreeConnectionExeption e) {
-			throw new DAOExeption("Ошибка получения конекта",e);
-		} catch (SQLException e) {
-			throw new DAOExeption("Ошибка работы с базой",e);
-		} finally {
-			if (resultSet != null) {
-				try {
-					resultSet.close();
-				} catch (SQLException e) {
-					LoggerHelp.printExeptionInWarn(e,logger);
-				}
-			}
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					LoggerHelp.printExeptionInWarn(e,logger);
-				}
-			}
-
-			connectionsPoolService.returnConnection(connection);
-		}
-		return attendances;
-	}
+	private static MapperFacade mapper = MapperFactoryInstance.getMapperFactoryInstance().getMapperFacade();
 
 	@Override
-	public List<Attendance> getAttendacesList() throws DAOExeption {
-		StringBuilder sql = new StringBuilder();
-		sql.append("Select lection_id,student_id from Attendance");
-		return getAttendancesListByQuery(sql.toString());
-	}
-
-	private int updateAttendancesByQuery(String query) throws DAOExeption {
-		Connection connection = null;
-		Statement statement = null;
-		int result;
+	public List<Attendance> getAttendacesList() throws DAOExeption{
+		EntityManager entityManager = null;
+		List<Attendance> result = null;
 		try {
-			connection = connectionsPoolService.getConnectionWithWait();
-			statement = connection.createStatement();
-			result = statement.executeUpdate(query);
-		} catch (NoFreeConnectionExeption e) {
-			throw new DAOExeption("Ошибка получения конекта",e);
-		} catch (SQLException e) {
-			throw new DAOExeption("Ошибка работы с базой",e);
+			entityManager = EntityManagerFactoryInstance.getEntityManager();
+			List<AttendanceEntity> resultTmp = entityManager.createQuery("from AttendanceEntity").getResultList();
+			result = mapper.mapAsList(resultTmp,Attendance.class);
+		} catch (Exception e) {
+			throw new DAOExeption("Ошибка получении AttendacesList");
 		} finally {
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					LoggerHelp.printExeptionInWarn(e,logger);
-				}
+			if (entityManager != null) {
+				entityManager.close();
 			}
-			connectionsPoolService.returnConnection(connection);
 		}
 		return result;
 	}
 
 	@Override
-	public void addNewAttendance(Attendance attendance) throws DAOExeption {
-		StringBuilder sql = new StringBuilder();
-		sql.append("INSERT INTO Attendance (student_id,lection_id) VALUES(")
-				.append(attendance.getStudent_id()).append(",")
-				.append(attendance.getLection_id()).append(")");
-		if (updateAttendancesByQuery(sql.toString()) != 1) {
-			throw new DAOExeption("Добавление не прошло");
+	public void addNewAttendance(Attendance attendance) throws DAOExeption{
+		EntityManager entityManager = null;
+		try {
+			entityManager = EntityManagerFactoryInstance.getEntityManager();
+			entityManager.getTransaction().begin();
+			entityManager.persist(mapper.map(attendance,AttendanceEntity.class));
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			throw new DAOExeption("Ошибка при добавлении нового attendace");
+		} finally {
+			if (entityManager != null) {
+				entityManager.close();
+			}
 		}
 	}
 
 	@Override
 	public void deleteAttendance(Attendance attendance) throws DAOExeption {
-		StringBuilder sql = new StringBuilder();
-		sql.append("BEGIN TRANSACTION\n")
-				.append("DELETE FROM Attendance WHERE student_id=").append(attendance.getStudent_id()).append(" AND ")
-				.append("lection_id=").append(attendance.getLection_id()).append("\n")
-				.append("COMMIT");
-		if (updateAttendancesByQuery(sql.toString()) != 1) {
-			throw new DAOExeption("Такого интенданс нету");
+		AttendanceEntity.EmbKey embKey = mapper.map(attendance,AttendanceEntity.EmbKey.class);
+		EntityManager entityManager = null;
+		try {
+			entityManager = EntityManagerFactoryInstance.getEntityManager();
+			entityManager.getTransaction().begin();
+			entityManager.remove(entityManager.find(AttendanceEntity.class,embKey));
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			throw new DAOExeption("Ошибка при удалении attendace");
+		} finally {
+			if (entityManager != null) {
+				entityManager.close();
+			}
 		}
 	}
 

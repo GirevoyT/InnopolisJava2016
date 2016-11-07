@@ -1,9 +1,9 @@
 package ru.innopolis.server.dao.student;
 
 import ru.innopolis.common.models.student.Student;
-import ru.innopolis.server.dao.student.exeptions.DAOExeption;
+import ru.innopolis.server.dao.exeptions.DAOExeption;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Arxan on 31.10.2016.
@@ -15,7 +15,7 @@ public interface DAOStudent {
 	 * @return
 	 * @throws DAOExeption
 	 */
-	public ArrayList<Student> getStudentsList() throws DAOExeption;
+	public List<Student> getStudentsList() throws DAOExeption;
 
 	/**
 	 * Метод для получения списка студентов из БД с фильтром по имени
@@ -23,7 +23,7 @@ public interface DAOStudent {
 	 * @return
 	 * @throws DAOExeption
 	 */
-	public ArrayList<Student> getStudentListWithFilterByFirstname(String firstname) throws DAOExeption;
+	public List<Student> getStudentListWithFilterByFirstname(String firstname) throws DAOExeption;
 
 	/**
 	 * Метод для получения студента по id

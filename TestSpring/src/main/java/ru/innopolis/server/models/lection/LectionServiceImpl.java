@@ -5,7 +5,7 @@ import ru.innopolis.common.models.lection.Lection;
 import ru.innopolis.common.models.lection.LectionService;
 import ru.innopolis.common.models.lection.exeptions.LectionServiceDataExeption;
 import ru.innopolis.server.dao.lection.DAOLection;
-import ru.innopolis.server.dao.student.exeptions.DAOExeption;
+import ru.innopolis.server.dao.exeptions.DAOExeption;
 
 import java.util.List;
 

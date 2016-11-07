@@ -1,51 +1,51 @@
 package ru.innopolis;
 
-import ru.innopolis.server.entity.LectionsEntity;
+import ma.glasnost.orika.MapperFacade;
+import ru.innopolis.common.models.student.Sex;
+import ru.innopolis.common.models.student.Student;
+import ru.innopolis.mapper.MapperFactoryInstance;
+import ru.innopolis.server.dao.exeptions.DAOExeption;
+import ru.innopolis.server.database.EntityManagerFactoryInstance;
+import ru.innopolis.server.entity.StudentsEntity;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.Calendar;
 
 /**
  * Created by Girevoy.T on 28.10.2016.
  */
 public class Main {
-	private static final String PERSISTENT_UNIT_NAME = "item-manager-pu";
-
-	private static final EntityManagerFactory emf;
-
 	static {
-		try {
-			emf = Persistence.createEntityManagerFactory(PERSISTENT_UNIT_NAME);
-		} catch (Throwable ex) {
-			throw new ExceptionInInitializerError(ex);
-		}
+		MapperFactoryInstance.getMapperFactoryInstance().classMap(Student.class, StudentsEntity.class)
+				.byDefault()
+				.register();
 	}
+	private static MapperFacade mapper = MapperFactoryInstance.getMapperFactoryInstance().getMapperFacade();
 
-	public static EntityManager getEm() {
-		return emf.createEntityManager();
-	}
-
-	public static void main(String[] args) {
+	public static void main(String[] args) throws DAOExeption {
 		System.out.println("Success");
 
+		Student student = new Student();
+		student.setBirthDate(Calendar.getInstance().getTime());
+		student.setSex(Sex.Female);
+		student.setFirstname("asd");
+		student.setLastname("asd");
 
-		EntityManager entityManager = getEm();
 
-		LectionsEntity lectionsEntity = new LectionsEntity();
+		StudentsEntity studentsEntity = mapper.map(student,StudentsEntity.class);
 
-		lectionsEntity.setDate(Calendar.getInstance().getTime());
-		lectionsEntity.setDescription("ksjdfhksdjhfkjsdf");
-		lectionsEntity.setTopic("LESSON SUPER");
-		lectionsEntity.setDuration(2);
+//		List<Attendance> attendanceList = daoAttendance.getAttendacesList();
 
-		entityManager.getTransaction().begin();
-		entityManager.merge(lectionsEntity);
-		entityManager.getTransaction().commit();
-		lectionsEntity = entityManager.find(LectionsEntity.class,1);
-		entityManager.close();
-		System.out.println(lectionsEntity);
+//		entityManager.getTransaction().begin();
+//
+//		entityManager.persist(t1);
+//
+//		entityManager.getTransaction().commit();
+//
+//		entityManager.refresh(t1);
+//
+//		entityManager.close();
+//
+		EntityManagerFactoryInstance.closeEMF();
 	}
 
 }

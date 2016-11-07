@@ -1,81 +1,77 @@
 package ru.innopolis.server.dao.lection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import ma.glasnost.orika.MapperFacade;
 import ru.innopolis.common.models.lection.Lection;
-import ru.innopolis.loggerhelp.LoggerHelp;
-import ru.innopolis.server.dao.student.exeptions.DAOExeption;
-import ru.innopolis.server.database.ConnectionPoolService;
-import ru.innopolis.server.database.exeptions.NoFreeConnectionExeption;
+import ru.innopolis.mapper.MapperFactoryInstance;
+import ru.innopolis.server.dao.exeptions.DAOExeption;
+import ru.innopolis.server.database.EntityManagerFactoryInstance;
+import ru.innopolis.server.entity.LectionsEntity;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
  * Created by Girevoy.T on 01.11.2016.
  */
+@Slf4j
 public class DAOLectionImpl implements DAOLection {
-	@Autowired
-	private ConnectionPoolService connectionsPoolService;
-
-	public void setConnectionsPoolService(ConnectionPoolService connectionsPoolService) {
-		this.connectionsPoolService = connectionsPoolService;
+	static {
+		MapperFactoryInstance.getMapperFactoryInstance().classMap(Lection.class, LectionsEntity.class)
+				.byDefault()
+				.register();
 	}
-
-	private static Logger logger = LoggerFactory.getLogger(DAOLectionImpl.class);
-
-	private List<Lection> getLectionsListByQuery(String query) throws DAOExeption {
-		List<Lection> lections = new ArrayList<>();
-		Connection connection = null;
-		Statement statement = null;
-		ResultSet resultSet = null;
-		try {
-			connection = connectionsPoolService.getConnectionWithWait();
-			statement = connection.createStatement();
-			resultSet = statement.executeQuery(query);
-			while (resultSet.next()) {
-				Lection tmp = new Lection();
-				tmp.setId(resultSet.getInt(1));
-				tmp.setTopic(resultSet.getString(2));
-				tmp.setDescription(resultSet.getString(3));
-				tmp.setDuration(resultSet.getInt(4));
-				tmp.setDate(resultSet.getDate(5));
-				lections.add(tmp);
-			}
-		} catch (NoFreeConnectionExeption e) {
-			throw new DAOExeption("Ошибка получения конекта",e);
-		} catch (SQLException e) {
-			throw new DAOExeption("Ошибка работы с базой",e);
-		} finally {
-			if (resultSet != null) {
-				try {
-					resultSet.close();
-				} catch (SQLException e) {
-					LoggerHelp.printExeptionInWarn(e,logger);
-				}
-			}
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					LoggerHelp.printExeptionInWarn(e,logger);
-				}
-			}
-
-			connectionsPoolService.returnConnection(connection);
-		}
-		return lections;
-	}
+	private static MapperFacade mapper = MapperFactoryInstance.getMapperFactoryInstance().getMapperFacade();
 
 	@Override
 	public List<Lection> getLectionsList() throws DAOExeption {
-		StringBuilder sql = new StringBuilder();
-		sql.append("Select id,topic,description,duration,date from Lections");
-		return getLectionsListByQuery(sql.toString());
+		EntityManager entityManager = null;
+		List<Lection> result = null;
+		try {
+			entityManager = EntityManagerFactoryInstance.getEntityManager();
+			List<LectionsEntity> resultTmp = entityManager.createQuery("from LectionsEntity").getResultList();
+			result = mapper.mapAsList(resultTmp,Lection.class);
+		} catch (Exception e) {
+			throw new DAOExeption("Ошибка получении LectionsList");
+		} finally {
+			if (entityManager != null) {
+				entityManager.close();
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public void addNewLection(Lection lection) throws DAOExeption {
+		EntityManager entityManager = null;
+		try {
+			entityManager = EntityManagerFactoryInstance.getEntityManager();
+			entityManager.getTransaction().begin();
+			entityManager.persist(mapper.map(lection,LectionsEntity.class));
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			throw new DAOExeption("Ошибка при добавлении нового Lection");
+		} finally {
+			if (entityManager != null) {
+				entityManager.close();
+			}
+		}
+	}
+
+	@Override
+	public void deleteLection(Lection lection) throws DAOExeption {
+		EntityManager entityManager = null;
+		try {
+			entityManager = EntityManagerFactoryInstance.getEntityManager();
+			entityManager.getTransaction().begin();
+			entityManager.remove(entityManager.find(LectionsEntity.class,lection.getId()));
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			throw new DAOExeption("Ошибка при удалении Lection");
+		} finally {
+			if (entityManager != null) {
+				entityManager.close();
+			}
+		}
 	}
 }

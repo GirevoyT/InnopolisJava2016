@@ -3,8 +3,8 @@ package ru.innopolis.common.models.student;
 import ru.innopolis.common.models.student.exeptions.CreateStudentExeption;
 import ru.innopolis.common.models.student.exeptions.StudentServiceDataExeption;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Интерфейс сервисов модели студента
@@ -26,7 +26,7 @@ public interface StudentService {
 	 * @return Список студентов
 	 * @throws StudentServiceDataExeption
 	 */
-	public ArrayList<Student> getStudentsList() throws StudentServiceDataExeption;
+	public List<Student> getStudentsList() throws StudentServiceDataExeption;
 
 	/**
 	 * Метод для получения списка студентов с заданным именем
@@ -34,7 +34,7 @@ public interface StudentService {
 	 * @return Список студенртов
 	 * @throws StudentServiceDataExeption
 	 */
-	public ArrayList<Student> getStudentListWithFilterByFirstname(String firstname) throws StudentServiceDataExeption;
+	public List<Student> getStudentListWithFilterByFirstname(String firstname) throws StudentServiceDataExeption;
 
 	/**
 	 * Метод для получения студента с указаным id

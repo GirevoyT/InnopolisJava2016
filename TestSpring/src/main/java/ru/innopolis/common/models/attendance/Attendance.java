@@ -1,27 +1,27 @@
 package ru.innopolis.common.models.attendance;
 
 /**
- * Класс для хранения посещения студентом student_id лекции lection_id
+ * Класс для хранения посещения студентом studentId лекции lectionId
  */
 public class Attendance {
 
-	private int student_id;
-	private int lection_id;
+	private int studentId;
+	private int lectionId;
 
-	public int getStudent_id() {
-		return student_id;
+	public int getStudentId() {
+		return studentId;
 	}
 
-	public void setStudent_id(int student_id) {
-		this.student_id = student_id;
+	public void setStudentId(int studentId) {
+		this.studentId = studentId;
 	}
 
-	public int getLection_id() {
-		return lection_id;
+	public int getLectionId() {
+		return lectionId;
 	}
 
-	public void setLection_id(int lection_id) {
-		this.lection_id = lection_id;
+	public void setLectionId(int lectionId) {
+		this.lectionId = lectionId;
 	}
 
 }

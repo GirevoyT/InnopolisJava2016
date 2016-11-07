@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.innopolis.common.models.student.Sex;
 import ru.innopolis.common.models.student.Student;
 import ru.innopolis.common.models.student.StudentService;
-import ru.innopolis.server.dao.student.DAOStudent;
-import ru.innopolis.server.dao.student.exeptions.DAOExeption;
 import ru.innopolis.common.models.student.exeptions.CreateStudentExeption;
 import ru.innopolis.common.models.student.exeptions.StudentServiceDataExeption;
+import ru.innopolis.server.dao.exeptions.DAOExeption;
+import ru.innopolis.server.dao.student.DAOStudent;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Arxan on 31.10.2016.
@@ -37,7 +37,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public ArrayList<Student> getStudentsList() throws StudentServiceDataExeption {
+	public List<Student> getStudentsList() throws StudentServiceDataExeption {
 		try {
 			return daoStudent.getStudentsList();
 		} catch (DAOExeption e) {
@@ -46,7 +46,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public ArrayList<Student> getStudentListWithFilterByFirstname(String firstname) throws StudentServiceDataExeption {
+	public List<Student> getStudentListWithFilterByFirstname(String firstname) throws StudentServiceDataExeption {
 		try {
 			return daoStudent.getStudentListWithFilterByFirstname(firstname);
 		} catch (DAOExeption e) {

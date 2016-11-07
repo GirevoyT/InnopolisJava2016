@@ -1,4 +1,4 @@
-package ru.innopolis.server.dao.student.exeptions;
+package ru.innopolis.server.dao.exeptions;
 
 /**
  * Created by Arxan on 31.10.2016.

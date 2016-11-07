@@ -8,7 +8,7 @@ import ru.innopolis.common.models.studentAttendences.StudentAttendanceService;
 import ru.innopolis.common.models.studentAttendences.exeptions.StudentAttendanceDataExeption;
 import ru.innopolis.server.dao.attendance.DAOAttendance;
 import ru.innopolis.server.dao.student.DAOStudent;
-import ru.innopolis.server.dao.student.exeptions.DAOExeption;
+import ru.innopolis.server.dao.exeptions.DAOExeption;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class StudentAttendanceServiceImpl implements StudentAttendanceService {
 				tmp.setStudent(student);
 				tmp.setLectionCount(0);
 				for (Attendance attendance : attendances) {
-					if (attendance.getStudent_id() == student.getId()) {
+					if (attendance.getStudentId() == student.getId()) {
 						tmp.setLectionCount(tmp.getLectionCount()+1);
 					}
 				}

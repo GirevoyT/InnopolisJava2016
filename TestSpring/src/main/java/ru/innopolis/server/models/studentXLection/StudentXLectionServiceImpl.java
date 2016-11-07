@@ -11,7 +11,7 @@ import ru.innopolis.common.models.studentXLection.exeptions.StudentXLectionDataE
 import ru.innopolis.server.dao.attendance.DAOAttendance;
 import ru.innopolis.server.dao.lection.DAOLection;
 import ru.innopolis.server.dao.student.DAOStudent;
-import ru.innopolis.server.dao.student.exeptions.DAOExeption;
+import ru.innopolis.server.dao.exeptions.DAOExeption;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +58,8 @@ public class StudentXLectionServiceImpl implements StudentXLectionService {
 					tmp.getLectionBox().add(tmpbox);
 					tmpbox.setLection(lection);
 					for (Attendance attendance: attendances) {
-						if (lection.getId() == attendance.getLection_id()) {
-							if (student.getId() == attendance.getStudent_id()) {
+						if (lection.getId() == attendance.getLectionId()) {
+							if (student.getId() == attendance.getStudentId()) {
 								tmpbox.setPresence(true);
 							}
 						}
@@ -75,8 +75,8 @@ public class StudentXLectionServiceImpl implements StudentXLectionService {
 	@Override
 	public void noteAttendance(int studentId, int lectionId, boolean state) throws StudentXLectionDataExeption {
 		Attendance attendance = new Attendance();
-		attendance.setLection_id(lectionId);
-		attendance.setStudent_id(studentId);
+		attendance.setLectionId(lectionId);
+		attendance.setStudentId(studentId);
 		try {
 			if (state) {
 				daoAttendance.addNewAttendance(attendance);

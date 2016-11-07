@@ -1,7 +1,7 @@
 package ru.innopolis.server.dao.lection;
 
 import ru.innopolis.common.models.lection.Lection;
-import ru.innopolis.server.dao.student.exeptions.DAOExeption;
+import ru.innopolis.server.dao.exeptions.DAOExeption;
 
 import java.util.List;
 
@@ -15,4 +15,8 @@ public interface DAOLection {
 	 * @throws DAOExeption
 	 */
 	public List<Lection> getLectionsList() throws DAOExeption;
+
+	public void addNewLection(Lection lection) throws DAOExeption;
+
+	public void deleteLection(Lection lection) throws DAOExeption;
 }

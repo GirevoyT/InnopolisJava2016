@@ -1,7 +1,7 @@
 package ru.innopolis.server.dao.attendance;
 
 import ru.innopolis.common.models.attendance.Attendance;
-import ru.innopolis.server.dao.student.exeptions.DAOExeption;
+import ru.innopolis.server.dao.exeptions.DAOExeption;
 
 import java.util.List;
 
