@@ -17,4 +17,5 @@ dependencies {
 	compile group: 'org.jmock', name: 'jmock-legacy', version: '2.8.2'
 	compile group: 'com.h2database', name: 'h2', version: '1.4.192'
 	compile group: 'com.windows', name:'sqljdbc', version: '4.2'
+	compile group: 'org.projectlombok', name: 'lombok', version: '1.16.10'
 }

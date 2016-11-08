@@ -1,4 +1,4 @@
-package ru.innopolis.course.java2016.girevoy.lessons.lessoon19.model;
+package ru.innopolis.course.java2016.girevoy.lessons.lesson19.model;
 
 /**
  * Created by Girevoy.T on 27.10.2016.
