@@ -1,5 +1,12 @@
 package ru.innopolis.course.java2016.girevoy.lessons.lesson27;
 
+import ru.innopolis.course.java2016.girevoy.lessons.lesson27.Calculator.CalculatorBuilder;
+import ru.innopolis.course.java2016.girevoy.lessons.lesson27.Calculator.commands.AddCommand;
+import ru.innopolis.course.java2016.girevoy.lessons.lesson27.Calculator.commands.SubCommand;
+import ru.innopolis.course.java2016.girevoy.lessons.lesson27.otherChainElements.BannerEllement;
+import ru.innopolis.course.java2016.girevoy.lessons.lesson27.otherChainElements.DataBaseEllement;
+import ru.innopolis.course.java2016.girevoy.lessons.lesson27.otherChainElements.SoutNumberEllement;
+
 /**
  * Created by Girevoy.T on 08.11.2016.
  */
@@ -9,10 +16,32 @@ public class ActionChain {
 
 	static {
 		INSTANCE = new ActionChain();
-
 	}
 
-	private ActionChain(){};
+	public static ActionChain getInstance() {
+		return INSTANCE;
+	}
+
+	private ActionChain(){
+		root = new BannerEllement();
+
+		ChainEllement curr = root;
+		ChainEllement next;
+
+		next = new DataBaseEllement();
+		curr.setNext(next);
+		curr = next;
+
+		next = (new CalculatorBuilder())
+				.addCommand("add",new AddCommand())
+				.addCommand("sub",new SubCommand())
+				.build();;
+		curr.setNext(next);
+		curr = next;
+
+		next = new SoutNumberEllement();
+		curr.setNext(next);
+	};
 
 	public void start(String command) throws TimeToBreakExeption {
 		String[] splitString = command.split(" ");
@@ -24,11 +53,11 @@ public class ActionChain {
 			case "exit" :
 				throw new TimeToBreakExeption();
 			default:
-				Number[] argsForCalculator = new Number[splitString.length-1];
-				for (int i =1; i < splitString.length;i++) {
-					argsForCalculator[i-1] = Double.parseDouble(splitString[i]);
+				try {
+					root.start(splitString);
+				} catch (ChainEllementExeption chainEllementExeption) {
+					chainEllementExeption.printStackTrace();
 				}
-				root.start(splitString);
 		}
 	}
 }

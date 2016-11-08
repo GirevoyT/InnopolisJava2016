@@ -11,13 +11,13 @@ public abstract class ChainEllement {
 	@Setter
 	private ChainEllement next;
 
-	protected abstract Object doWork(Object msg);
+	protected abstract Object doWork(Object msg) throws ChainEllementExeption;
 
 	/**
 	 * Публичный метод для запуска элемента цепи
 	 * @param msg передаваемое сообщение
 	 */
-	public void start(Object msg) {
+	public void start(Object msg) throws ChainEllementExeption {
 		Object result = doWork(msg);
 		if (next != null) {
 			next.start(result);

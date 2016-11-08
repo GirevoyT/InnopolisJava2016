@@ -4,6 +4,7 @@ import ru.innopolis.course.java2016.girevoy.lessons.lesson27.Calculator.commands
 import ru.innopolis.course.java2016.girevoy.lessons.lesson27.Calculator.commands.exeptions.CommandExeption;
 import ru.innopolis.course.java2016.girevoy.lessons.lesson27.Calculator.exeptions.CalculatorExeption;
 import ru.innopolis.course.java2016.girevoy.lessons.lesson27.ChainEllement;
+import ru.innopolis.course.java2016.girevoy.lessons.lesson27.ChainEllementExeption;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +49,24 @@ public class Calculator extends ChainEllement{
 	}
 
 	@Override
-	protected Object doWork(Object msg) {
-		return null;
+	protected Object doWork(Object msg) throws ChainEllementExeption {
+		Object result;
+		if (!(msg instanceof String[])) {
+			throw new ChainEllementExeption("Неверное входящее сообщение");
+		} else if (((String[])msg).length != 3) {
+			throw new ChainEllementExeption("Неверное входящее сообщение");
+		} else {
+			String[] splitString = (String[])msg;
+			Number[] argsForCalculator = new Number[splitString.length-1];
+			for (int i =1; i < splitString.length;i++) {
+				argsForCalculator[i-1] = Double.parseDouble(splitString[i]);
+			}
+			try {
+				result = countUp(splitString[0],argsForCalculator);
+			} catch (CalculatorExeption e) {
+				throw new ChainEllementExeption("Ошибка калькулятора",e);
+			}
+		}
+		return result;
 	}
 }
