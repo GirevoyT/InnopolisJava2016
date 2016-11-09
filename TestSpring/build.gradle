@@ -27,5 +27,4 @@ dependencies {
 	compile group: 'org.hibernate', name: 'hibernate-gradle-plugin', version: '5.2.4.Final'
 	compile group: 'ma.glasnost.orika', name: 'orika-core', version: '1.4.6'
 	compile group: 'org.projectlombok', name: 'lombok', version: '1.16.10'
-
 }

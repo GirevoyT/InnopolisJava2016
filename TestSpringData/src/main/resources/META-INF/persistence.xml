@@ -1,0 +1,28 @@
+<persistence version="1.0"
+			 xmlns="http://java.sun.com/xml/ns/persistence"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+				http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+<persistence-unit name="item-manager-pu" transaction-type="RESOURCE_LOCAL">
+	<class>ru.innopolis.server.entity.AttendanceEntity</class>
+	<class>ru.innopolis.server.entity.LectionsEntity</class>
+	<class>ru.innopolis.server.entity.StudentsEntity</class>
+
+	<properties>
+	<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
+	<property name="hibernate.hbm2ddl.auto" value = "update"/>
+	<property name="hibernate.show_sql" value = "true"/>
+	<property name="hibernate.format_sql" value = "true"/>
+	<property name="current_session_context_class" value = "thread"/>
+
+		<property name="hibernate.connection.url"
+				  value="jdbc:sqlserver://192.168.140.1\dbo:1433;databaseName=TestBase"/>
+		<property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+		<property name="hibernate.connection.username" value="sa"/>
+		<property name="hibernate.connection.password" value="Testarosa123"/>
+
+	</properties>
+
+</persistence-unit>
+
+</persistence>
