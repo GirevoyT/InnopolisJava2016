@@ -9,14 +9,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <script src="resources/scripts/Students_00001.js"></script>
 
-<table>
+<table id="studentTable" class="tablesorter">
 	<thead>
-	<td>id</td>
-	<td>firstname</td>
-	<td>lastname</td>
-	<td>sex</td>
-	<td>birt date</td>
-	<td></td>
+	<th>id</th>
+	<th>firstname</th>
+	<th>lastname</th>
+	<th>sex</th>
+	<th>birt date</th>
+	<th></th>
 	</thead>
 	<tbody>
 		<c:forEach items="${studentArray}" var="item">
@@ -29,15 +29,15 @@
 			<td onclick="STUDENTS.delete(${item.id})">X</td>
 		</tr>
 		</c:forEach>
-		<tr>
-			<td></td>
-			<td><input id="inputFirstname"></td>
-			<td><input id="inputLastname"></td>
-			<td><input id="inputSex"></td>
-			<td><input id="inputBirthDate" type="date"></td>
-			<td onclick="STUDENTS.add()">OK</td>
-		</tr>
 	</tbody>
-
+	<tfoot>
+		<td></td>
+		<td><input id="inputFirstname"></td>
+		<td><input id="inputLastname"></td>
+		<td><input id="inputSex"></td>
+		<td><input id="inputBirthDate" type="date"></td>
+		<td onclick="STUDENTS.add()">OK</td>
+	</tfoot>
 </table>
+<img src="AAAAAAA.jpg" onerror="STUDENTS.onstartup()" hidden>
 

@@ -11,6 +11,7 @@
 <head>
 	<script src="resources/scripts/Main_00001.js"></script>
 	<script src="resources/scripts/jquery-3.1.1.min.js"></script>
+	<script src="resources/scripts/tablesorter/jquery.tablesorter.min.js"></script>
 	<title>Super Student Table</title>
 </head>
 <body>

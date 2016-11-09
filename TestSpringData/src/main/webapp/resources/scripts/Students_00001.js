@@ -3,7 +3,7 @@
  */
 function Students() {}
 Students.prototype.onstartup = function () {
-
+	$("#studentTable").tablesorter();
 }
 
 Students.prototype.delete = function (id) {
