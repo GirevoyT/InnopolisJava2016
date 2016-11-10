@@ -1,0 +1,118 @@
+version '0.1'
+
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+	}
+}
+
+
+
+apply plugin: 'war'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+
+
+// tag::xsd[]
+task genJaxb {
+	ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
+	ext.classesDir = "${buildDir}/classes/jaxb"
+	ext.schema = "src/main/resources/countries.xsd"
+
+	outputs.dir classesDir
+
+	doLast() {
+		project.ant {
+			taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
+					classpath: configurations.jaxb.asPath
+			mkdir(dir: sourcesDir)
+			mkdir(dir: classesDir)
+
+			xjc(destdir: sourcesDir, schema: schema) {
+				arg(value: "-wsdl")
+				produces(dir: sourcesDir, includes: "**/*.java")
+			}
+
+			javac(includeantruntime:false,destdir: classesDir, source: 1.6, target: 1.6, debug: true,
+					debugLevel: "lines,vars,source",
+					classpath: configurations.jaxb.asPath) {
+				src(path: sourcesDir)
+				include(name: "**/*.java")
+				include(name: "*.java")
+			}
+
+			copy(todir: classesDir) {
+				fileset(dir: sourcesDir, erroronmissingdir: false) {
+					exclude(name: "**/*.java")
+				}
+			}
+		}
+	}
+}
+// end::xsd[]
+
+task afterEclipseImport {
+	dependsOn "genJaxb"
+}
+
+// tag::jaxb[]
+configurations {
+	jaxb
+}
+
+jar {
+	baseName = 'gs-producing-web-service'
+	version =  '0.1.0'
+	from genJaxb.classesDir
+}
+
+// tag::dependencies[]
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+dependencies {
+	compile "org.slf4j:slf4j-api:1.7.21"
+	compile "org.slf4j:slf4j-log4j12:1.7.21"
+	testCompile group: 'junit', name: 'junit', version: '4.11'
+	testCompile group: 'org.jmock', name: 'jmock-junit4', version: '2.8.2'
+	testCompile group: 'org.jmock', name: 'jmock-legacy', version: '2.8.2'
+	compile 'org.springframework:spring-webmvc:4.3.3.RELEASE'
+	compile 'org.springframework:spring-core:4.3.3.RELEASE'
+	compile 'org.springframework:spring-web:4.3.3.RELEASE'
+	compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.3.RELEASE'
+	compile group: 'org.springframework.security', name: 'spring-security-core', version: '3.2.5.RELEASE'
+	compile group: 'org.springframework.security', name: 'spring-security-web', version: '3.2.5.RELEASE'
+	compile group: 'org.springframework.security', name: 'spring-security-config', version: '3.2.5.RELEASE'
+	compile group: 'org.springframework.security', name: 'spring-security-taglibs', version: '3.2.5.RELEASE'
+	compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+	compile group: 'com.windows', name:'sqljdbc', version: '4.2'
+	compile group: 'jstl', name: 'jstl', version: '1.2'
+	compile group: 'org.hibernate', name: 'hibernate-gradle-plugin', version: '5.1.0.Final'
+	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.1.0.Final'
+	compile group: 'ma.glasnost.orika', name: 'orika-core', version: '1.4.6'
+	compile group: 'org.projectlombok', name: 'lombok', version: '1.16.10'
+	compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.10.5.RELEASE'
+	compile "javax.transaction:transaction-api:1.1";
+	compile "javax.transaction:jta:1.1";
+	compile "org.springframework:spring-tx:4.3.3.RELEASE";
+	compile group: 'org.springframework', name: 'spring-remoting', version: '2.0.8'
+
+
+	compile("org.springframework.boot:spring-boot-starter-ws")
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+	compile("wsdl4j:wsdl4j:1.6.1")
+
+
+	jaxb("com.sun.xml.bind:jaxb-xjc:2.2.4-1")
+	compile(files(genJaxb.classesDir).builtBy(genJaxb))
+}

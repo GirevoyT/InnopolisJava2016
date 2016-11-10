@@ -1,3 +1,3 @@
 rootProject.name = 'MyRootProject'
 
-include 'part1','part2','lab1module','lab2module','TestSpring','lab1moduleWithIO','srezSpringSecurity','TestSpringData'
+include 'part1','part2','lab1module','lab2module','TestSpring','lab1moduleWithIO','srezSpringSecurity','TestSpringData','SoapPart1','SoapPart2'
