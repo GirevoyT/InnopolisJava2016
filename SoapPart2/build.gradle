@@ -1,6 +1,70 @@
-apply plugin: 'war'
 
-version '0.1'
+//buildscript {
+//	repositories {
+//		mavenCentral()
+//		maven {
+//			url "https://plugins.gradle.org/m2/"
+//		}
+//	}
+//	dependencies {
+//		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+//	}
+//}
+
+
+
+apply plugin: 'war'
+apply plugin: 'idea'
+//apply plugin: 'spring-boot'
+
+configurations {
+	jaxb
+}
+
+task genJaxb {
+	ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
+	ext.classesDir = "${buildDir}/classes/jaxb"
+	ext.schema = "http://192.168.140.2:8080/Countries.wsdl"
+
+	outputs.dir classesDir
+
+	doLast() {
+		project.ant {
+			taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
+					classpath: configurations.jaxb.asPath
+			mkdir(dir: sourcesDir)
+			mkdir(dir: classesDir)
+
+			xjc(destdir: sourcesDir, schema: schema,
+					package: "hello.wsdl") {
+				arg(value: "-wsdl")
+				produces(dir: sourcesDir, includes: "**/*.java")
+			}
+
+			javac(destdir: classesDir, source: 1.6, target: 1.6, debug: true,
+					debugLevel: "lines,vars,source",
+					classpath: configurations.jaxb.asPath) {
+				src(path: sourcesDir)
+				include(name: "**/*.java")
+				include(name: "*.java")
+			}
+
+			copy(todir: classesDir) {
+				fileset(dir: sourcesDir, erroronmissingdir: false) {
+					exclude(name: "**/*.java")
+				}
+			}
+		}
+	}
+}
+
+
+
+jar {
+	baseName = 'gs-producing-web-service'
+	version =  '0.1.0'
+	from genJaxb.classesDir
+}
 
 repositories {
 	mavenCentral()
@@ -33,4 +97,14 @@ dependencies {
 	compile "javax.transaction:jta:1.1";
 	compile "org.springframework:spring-tx:4.3.3.RELEASE";
 	compile group: 'org.springframework', name: 'spring-remoting', version: '2.0.8'
+
+
+	compile("org.springframework.boot:spring-boot-starter-ws")
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+	compile("wsdl4j:wsdl4j:1.6.1")
+
+	compile("org.springframework.ws:spring-ws-core")
+
+	jaxb("com.sun.xml.bind:jaxb-xjc:2.2.4-1")
+	compile(files(genJaxb.classesDir).builtBy(genJaxb))
 }

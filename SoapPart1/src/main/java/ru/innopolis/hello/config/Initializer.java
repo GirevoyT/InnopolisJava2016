@@ -1,14 +1,11 @@
 package ru.innopolis.hello.config;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 
 import javax.servlet.ServletContext;
@@ -42,7 +39,7 @@ public class Initializer implements WebApplicationInitializer {
 
 		ServletRegistration.Dynamic servlet = servletContext.addServlet(DISPATCHER_SERVLET_NAME,
 			dispatcherServlet(ctx));
-		servlet.addMapping("/ws/*");
+		servlet.addMapping("/");
 		servlet.setLoadOnStartup(1);
 	}
 
