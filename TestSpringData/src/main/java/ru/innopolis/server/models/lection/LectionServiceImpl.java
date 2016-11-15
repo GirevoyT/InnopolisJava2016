@@ -29,6 +29,4 @@ public class LectionServiceImpl implements LectionService{
 			throw new LectionServiceDataExeption(e);
 		}
 	}
-
-
 }

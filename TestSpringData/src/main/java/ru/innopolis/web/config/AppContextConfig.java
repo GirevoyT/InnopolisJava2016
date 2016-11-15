@@ -29,11 +29,14 @@ import ru.innopolis.server.dao.student.DAOStudent;
 import ru.innopolis.server.dao.student.DAOStudentImpl;
 import ru.innopolis.server.database.ConnectionPoolService;
 import ru.innopolis.server.database.ConnectionsPoolServiceImpl;
+import ru.innopolis.server.models.ServiceLogger;
 import ru.innopolis.server.models.lection.LectionServiceImpl;
+import ru.innopolis.server.models.lection.LectionServiceImplDecorator;
 import ru.innopolis.server.models.student.StudentServiceImpl;
 import ru.innopolis.server.models.studentAttendences.StudentAttendanceServiceImpl;
 import ru.innopolis.server.models.studentXLection.StudentXLectionServiceImpl;
 
+import java.lang.reflect.Proxy;
 import java.util.Properties;
 
 @Configuration
@@ -113,13 +116,30 @@ public class AppContextConfig {
 		autowire = Autowire.BY_NAME)
 	@Scope("singleton")
 	public StudentService studentService() {
+		Proxy.newProxyInstance(
+			AppContextConfig.class.getClassLoader(),
+			new Class[]{ StudentService.class },
+			new ServiceLogger()
+		);
 		return new StudentServiceImpl();
+	}
+	@Bean(name = "studentServiceComponent",
+		autowire = Autowire.BY_NAME)
+	@Scope("singleton")
+	public StudentService studentServiceComponent() {
+		return new StudentServiceImpl();
+	}
+	@Bean(name = "lectionServiceComponent",
+		autowire = Autowire.BY_NAME)
+	@Scope("singleton")
+	public LectionService lectionServiceComponent() {
+		return new LectionServiceImpl();
 	}
 	@Bean(name = "lectionService",
 		autowire = Autowire.BY_NAME)
 	@Scope("singleton")
 	public LectionService lectionService() {
-		return new LectionServiceImpl();
+		return new LectionServiceImplDecorator();
 	}
 	@Bean(name = "studentXLectionService",
 		autowire = Autowire.BY_NAME)

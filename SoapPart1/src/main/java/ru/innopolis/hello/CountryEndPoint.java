@@ -9,6 +9,9 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 import ru.innopolis.hello.gs_producing_web_service.GetCountryRequest;
 import ru.innopolis.hello.gs_producing_web_service.GetCountryResponse;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Arxan on 10.11.2016.
  */
@@ -19,6 +22,7 @@ public class CountryEndPoint {
 
 	static {
 		System.out.println();
+		Map<Integer,Integer> map = new HashMap<>();
 	}
 
 	private CountryRepository countryRepository;
