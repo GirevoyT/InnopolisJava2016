@@ -112,23 +112,26 @@ public class AppContextConfig {
 	public StudentAttendanceService studentAttendanceService() {
 		return new StudentAttendanceServiceImpl();
 	}
+
 	@Bean(name = "studentService",
 		autowire = Autowire.BY_NAME)
 	@Scope("singleton")
 	public StudentService studentService() {
-		Proxy.newProxyInstance(
+		Object proxy = Proxy.newProxyInstance(
 			AppContextConfig.class.getClassLoader(),
 			new Class[]{ StudentService.class },
 			new ServiceLogger()
 		);
-		return new StudentServiceImpl();
+		return (StudentService)proxy;
 	}
-	@Bean(name = "studentServiceComponent",
+
+	@Bean(name = "studentService2",
 		autowire = Autowire.BY_NAME)
 	@Scope("singleton")
-	public StudentService studentServiceComponent() {
+	public StudentService studentService2() {
 		return new StudentServiceImpl();
 	}
+
 	@Bean(name = "lectionServiceComponent",
 		autowire = Autowire.BY_NAME)
 	@Scope("singleton")

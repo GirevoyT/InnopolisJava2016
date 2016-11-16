@@ -58,13 +58,13 @@ task genJaxb {
 	}
 }
 
-
-
-jar {
-	baseName = 'gs-producing-web-service'
-	version =  '0.1.0'
-	from genJaxb.classesDir
-}
+//
+//
+//jar {
+//	baseName = 'gs-producing-web-service'
+//	version =  '0.1.0'
+//	from genJaxb.classesDir
+//}
 
 repositories {
 	mavenCentral()
@@ -99,11 +99,10 @@ dependencies {
 	compile group: 'org.springframework', name: 'spring-remoting', version: '2.0.8'
 
 
-	compile("org.springframework.boot:spring-boot-starter-ws")
-	testCompile("org.springframework.boot:spring-boot-starter-test")
+//	compile("org.springframework.boot:spring-boot-starter-ws")
+//	testCompile("org.springframework.boot:spring-boot-starter-test")
 	compile("wsdl4j:wsdl4j:1.6.1")
 
-	compile("org.springframework.ws:spring-ws-core")
 
 	jaxb("com.sun.xml.bind:jaxb-xjc:2.2.4-1")
 	compile(files(genJaxb.classesDir).builtBy(genJaxb))
