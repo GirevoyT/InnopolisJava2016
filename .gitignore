@@ -1,8 +1,9 @@
 /gradle
 /.gradle
-/.idea
+.idea
 *.log
 /build
+/AdressBook/build
 /lab1module/build
 /lab2module/build
 /TestSpring/build
