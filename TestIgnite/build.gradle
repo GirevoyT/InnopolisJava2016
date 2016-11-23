@@ -1,0 +1,34 @@
+apply plugin: 'java'
+
+version '0.1'
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+dependencies {
+//Удобные библиотечки
+	compile group: 'ma.glasnost.orika', name: 'orika-core', version: '1.4.6'
+	compile group: 'org.projectlombok', name: 'lombok', version: '1.16.10'
+	compile "org.slf4j:slf4j-api:1.7.21"
+	compile "org.slf4j:slf4j-log4j12:1.7.21"
+////JDBC MS SQL локальный репозиторий
+//	compile group: 'com.windows', name:'sqljdbc', version: '4.2'
+////Hibernate
+//	compile group: 'org.hibernate', name: 'hibernate-gradle-plugin', version: '5.1.0.Final'
+//	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.1.0.Final'
+//Основа спринга
+	compile 'org.springframework:spring-core:4.3.4.RELEASE' //Ядро
+//	compile 'org.springframework:spring-webmvc:4.3.4.RELEASE' //MVC - model view controll
+//	compile 'org.springframework:spring-web:4.3.4.RELEASE' //Spring WEB
+//	compile "org.springframework:spring-tx:4.3.4.RELEASE"; //Spring transaction
+
+//	compile group: 'org.springframework', name: 'spring-jdbc', version: '4.3.4.RELEASE' //Spring jdbc
+//	compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '1.10.5.RELEASE' // Spring data jpa
+//Ignite
+	compile group: 'org.apache.ignite', name: 'ignite-core', version: '1.7.0'
+	compile group: 'org.apache.ignite', name: 'ignite-spring', version: '1.7.0'
+//	compile group: 'org.apache.ignite', name: 'ignite-indexing', version: '1.7.0'
+
+}
