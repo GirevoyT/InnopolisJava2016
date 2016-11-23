@@ -17,6 +17,7 @@
 	<!-- beans -->
 
 	<bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+		<property name="peerClassLoadingEnabled" value="true"/>
 		<property name="gridName" value="TestGrid"/>
 		<!-- Enable client mode. -->
 		<property name="clientMode" value="true"/>

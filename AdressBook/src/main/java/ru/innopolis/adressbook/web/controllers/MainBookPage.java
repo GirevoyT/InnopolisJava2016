@@ -9,8 +9,8 @@ import ru.innopolis.adressbook.common.models.contact.ContactService;
 @Controller
 @RequestMapping("/MainBookPage")
 public class MainBookPage {
-	@Autowired
-	ContactService contactService;
+//	@Autowired
+//	ContactService contactService;
 
 	@RequestMapping("")
 	public ModelAndView index() {
